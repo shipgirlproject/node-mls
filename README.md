@@ -7,7 +7,7 @@ DAVE → RFC9420 (MLS) → RFC9180 (HPKE)
              ↑
 ```
 
-**Experimental** implementation of Messaging Layer Security primarily for use with an implementation of Discord's DAVE protocol ([shipgirlproject/node-dave]()), so not all of the MLS specification is implemented.
+**Experimental** implementation of Messaging Layer Security primarily for use with an implementation of Discord's DAVE protocol ([shipgirlproject/node-dave](https://github.com/shipgirlproject/node-dave/)), so not all of the MLS specification is implemented.
 
 ## Status
 Target: Partial [RFC9420](https://datatracker.ietf.org/doc/html/rfc9420) (MLS v1)
