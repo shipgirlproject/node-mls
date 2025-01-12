@@ -2,9 +2,9 @@ name: Publish TypeDoc
 on:
   workflow_dispatch:
   workflow_call:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - master
 permissions:
   contents: write # allows the 'Commit' step without tokens
 
