@@ -1,0 +1,31 @@
+name: Prerelease
+
+on:
+  push:
+    branches:
+      - main
+      - "v[0-9]+"
+    tags:
+      - "!**"
+  pull_request:
+
+jobs:
+  publish:
+    name: Publish Prerelease
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Use Node LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Install Depedencies
+        run: npm ci
+      - name: Publish to pkg.pr.new
+        run: npx pkg-pr-new publish

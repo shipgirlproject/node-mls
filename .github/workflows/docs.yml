@@ -1,0 +1,87 @@
+name: Publish TypeDoc
+on:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write # allows the 'Commit' step without tokens
+
+jobs:
+  get_history: # create an artifact from the existing documentation builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: get the typedoc repo
+        uses: actions/checkout@v4
+        with:
+            ref: typedoc
+
+      - name: tar the existing docs
+        run: |
+            mkdir -p ./docs
+            tar -cvf docs.tar ./docs
+
+      - name: create a document artifact
+        uses: actions/upload-artifact@v4
+        with:
+            name: docs
+            path: docs.tar
+
+  build: # builds the distribution and then the documentation
+    needs: get_history
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout src
+        uses: actions/checkout@v4
+
+      - run: mkdir -p ./docs
+      - name: Download the existing documents artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+      - run: tar -xf docs.tar ./docs -C ./docs
+
+      - name: Build
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm i
+      - run: npm run build # set up 'build' script in your package.json
+
+      - name: Build documents
+        run: npm run build:docs #set up 'build:docs' build script in your package.json
+
+      - name: tar the new docs
+        run: tar -cvf newdocs.tar ./docs
+
+      - name: create a new document artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: newdocs
+          path: newdocs.tar
+
+  commit: # commit the old and new merged documents to typedoc/docs
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout the typedoc repo
+        uses: actions/checkout@v4
+        with:
+          ref: typedoc
+
+      - run: mkdir -p ./docs
+      - name: Download the new documents artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: newdocs
+      - run: tar -xf newdocs.tar ./docs -C ./docs
+
+      - name: commit
+        run: |
+          git config --global user.email "actions-user@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git commit -m "Update docs from latest commit"
+          git push

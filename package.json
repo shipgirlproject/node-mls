@@ -1,0 +1,51 @@
+{
+  "name": "@shipgirl/mls",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "build": "npm run build:ts && npm run build:docs",
+    "build:ts": "tsup --config tsup-config.json",
+    "build:docs": "typedoc --theme default --readme TypeDoc.md --name Shoukaku --out docs/ --entryPointStrategy expand src/.",
+    "lint": "eslint .",
+    "prepare": "npm run build:ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shipgirlproject/node-mls.git"
+  },
+  "author": "0t4u <61939142+0t4u@users.noreply.github.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shipgirlproject/node-mls/issues"
+  },
+  "homepage": "https://github.com/shipgirlproject/node-mls#readme",
+  "dependencies": {
+    "@noble/ciphers": "^1.1.3",
+    "@noble/curves": "^1.7.0",
+    "@noble/hashes": "^1.6.1"
+  },
+  "description": "",
+  "devDependencies": {
+    "@shipgirl/eslint-config": "^0.4.0",
+    "@shipgirl/typedoc-plugin-versions": "^0.3.0",
+    "@types/node": "^22.10.1",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint-plugin-n": "^17.15.0",
+    "tsup": "^8.3.5",
+    "typedoc": "^0.27.4",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
