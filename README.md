@@ -1,5 +1,7 @@
 # Node.js MLS
 
+> This project is not ready for use. Any help on inplementation/interpretation of the specification(s) is appreciated.
+
 ```text
 DAVE → RFC9420 (MLS) → RFC9180 (HPKE)
              ↑
